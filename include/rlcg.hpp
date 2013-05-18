@@ -35,9 +35,8 @@ namespace rlcg {
 namespace details {
 
 template<class T>
-T mod(T a, T b) {
-    a %= b;
-    return a > 0 ? a : a + b;
+constexpr bool isPowerOfTwo(T x){
+    return (x & (x - 1)) == 0;
 }
 
 //template metaprogramming implementation of euclids algorithm
@@ -82,18 +81,22 @@ const int moduloInverse(int64_t a, int64_t b) {
     return lastx;
 }
 
+//modulus M, multiplicand A, increment C, least significant bits D to discard
 template<int64_t M = 1u<<31u, int64_t A = 1103515245, int64_t C = 12345, int64_t D = 2>
 class ReversibleLCG {
+    static_assert(isPowerOfTwo(M), "M is not a power of two as it should be");
     int64_t x;
 public:
     ReversibleLCG(int seed) : x(seed){}
     unsigned int next() {
-        x = (A * x + C) % M;
+        //nextx = (a * x + c) % m;
+        x = (A * x + C) & (M - 1);
         return x >> D;
     }
     unsigned int prev() {
         const int64_t ainverse = ExtendedEuclid<A, M>::x;
-        x = mod(ainverse * (x - C), M);
+        //prevx = (ainverse * (x - c)) mod m
+        x = ainverse * (x - C) & (M-1);
         return x >> D;
     }
     unsigned int max() const {
