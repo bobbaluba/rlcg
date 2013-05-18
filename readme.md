@@ -24,7 +24,7 @@ With this implementation you can do:
     int rnd4 = myRng.next(); // rnd4 == rnd2
 
 
-Why would i want this?
+Why would I want this?
 ----------------------
 
 Sometimes it is useful to backtrace from a current random number to the 
@@ -43,6 +43,9 @@ generator has a period of 2^64.
 See https://en.wikipedia.org/wiki/Linear_congruential_generator 
 for more details.
 
+There's also an issue with the random number before the first number 
+often being 0 or close to zero. I am not completely sure why this 
+happens.
 
 Author
 ------
