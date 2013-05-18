@@ -40,40 +40,36 @@ T mod(T a, T b) {
     return a > 0 ? a : a + b;
 }
 
-void extendedEuclid(int64_t a, int64_t b, int64_t *lastx, int64_t *lasty) {
+const int moduloInverse(int64_t a, int64_t b) {
+    //euclid's algorithm
     int64_t x = 0;
     int64_t y = 1;
-    *lastx = 1;
-    *lasty = 0;
+    int64_t lastx = 1;
+    int64_t lasty = 0;
     int64_t q, r;
     int64_t tmp;
 
     while (b != 0) {
         q = a / b;
         r = a % b;
-        tmp = x; x = *lastx - q * x; *lastx = tmp;
-        tmp = y; y = *lasty - q * y; *lasty = tmp;
+        tmp = x; x = lastx - q * x; lastx = tmp;
+        tmp = y; y = lasty - q * y; lasty = tmp;
         a = b; b = r;
     }
-}
-
-int64_t moduloInverse(int64_t a, int64_t m){
-    int64_t inverse, discard;
-    extendedEuclid(a, m, &inverse, &discard);
-    return inverse;
+    return lastx;
 }
 
 template<int64_t M = 1u<<31u, int64_t A = 1103515245, int64_t C = 12345, int64_t D = 2>
 class ReversibleLCG {
     int64_t x;
+    const int64_t ainverse;
 public:
-    ReversibleLCG(int seed) : x(seed) {}
+    ReversibleLCG(int seed) : x(seed), ainverse(moduloInverse(A, M)){}
     unsigned int next() {
         x = (A * x + C) % M;
         return x >> D;
     }
     unsigned int prev() {
-        const int64_t ainverse = moduloInverse(A, M);
         x = mod(ainverse * (x - C), M);
         return x >> D;
     }
