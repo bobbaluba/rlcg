@@ -36,31 +36,28 @@ int64_t moduloInverse(int64_t a, int64_t m){
     return inverse;
 }
 
-} // end namespace details
-
-using namespace details;
-
+template<int64_t M = 1u<<31u, int64_t A = 1103515245, int64_t C = 12345, int64_t D = 2>
 class ReversibleLCG {
     int64_t x;
-    const int64_t m;
-    const int64_t a;
-    const int64_t ainverse;
-    const int64_t c;
 public:
-    ReversibleLCG(int seed) : x(seed), m(1u<<31u), a(1103515245), ainverse(moduloInverse(a, m)), c(12345) {
-    }
+    ReversibleLCG(int seed) : x(seed) {}
     unsigned int next() {
-        x = (a * x + c) % m;
-        return x >> 2;
+        x = (A * x + C) % M;
+        return x >> D;
     }
     unsigned int prev() {
-        x = mod(ainverse * (x - c), m);
-        return x >> 2;
+        const int64_t ainverse = moduloInverse(A, M);
+        x = mod(ainverse * (x - C), M);
+        return x >> D;
     }
     unsigned int max() const {
-        return m >> 2;
+        return M >> D;
     }
 };
+
+} // end namespace details
+
+using ReversibleLCG = details::ReversibleLCG<>;
 
 } // end namespace rlcg
 
