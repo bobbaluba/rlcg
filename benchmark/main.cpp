@@ -5,7 +5,7 @@
 #include <cstdlib>
 
 int main() {
-	const unsigned int numbers = 10000000;
+	const unsigned int numbers = 100000000;
 	{
 		std::cout << "next() " << numbers << " times...\t"; std::cout.flush();
 
