@@ -38,8 +38,7 @@ How random are the generated numbers?
 
 Basically the quality is not suitable for cryptographic applications, but
 it should be fine in most use cases. With the standard parameters, the 
-generator has a period of 2^32, but this can be increased by adjusting
-the M and C parameters. 
+generator has a period of 2^64.
 
 See https://en.wikipedia.org/wiki/Linear_congruential_generator 
 for more details.
