@@ -5,7 +5,7 @@
 
 namespace rlcg {
 
-namespace details{
+namespace details {
 
 template<class T>
 T mod(T a, T b) {
@@ -13,7 +13,7 @@ T mod(T a, T b) {
     return a > 0 ? a : a + b;
 }
 
-void ext_euclid(int64_t a, int64_t b, int64_t *lastx, int64_t *lasty) {
+void extendedEuclid(int64_t a, int64_t b, int64_t *lastx, int64_t *lasty) {
     int64_t x = 0;
     int64_t y = 1;
     *lastx = 1;
@@ -30,30 +30,34 @@ void ext_euclid(int64_t a, int64_t b, int64_t *lastx, int64_t *lasty) {
     }
 }
 
+int64_t moduloInverse(int64_t a, int64_t m){
+    int64_t inverse, discard;
+    extendedEuclid(a, m, &inverse, &discard);
+    return inverse;
+}
+
 } // end namespace details
 
 using namespace details;
 
 class ReversibleLCG {
     int64_t x;
-    int64_t a;
-    int64_t m;
-    int64_t c;
-    int64_t ainverse;
+    const int64_t m;
+    const int64_t a;
+    const int64_t ainverse;
+    const int64_t c;
 public:
-    ReversibleLCG(int seed) : x(seed), a(1103515245), m(1u<<31u), c(12345){
-        int64_t discard;
-        ext_euclid(a, m, &ainverse, &discard);
+    ReversibleLCG(int seed) : x(seed), m(1u<<31u), a(1103515245), ainverse(moduloInverse(a, m)), c(12345) {
     }
-    unsigned int next(){
-        x = (a*x + c) % m;
+    unsigned int next() {
+        x = (a * x + c) % m;
         return x >> 2;
     }
-    unsigned int prev(){
+    unsigned int prev() {
         x = mod(ainverse * (x - c), m);
         return x >> 2;
     }
-    unsigned int max(){
+    unsigned int max() const {
         return m >> 2;
     }
 };
