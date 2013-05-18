@@ -39,7 +39,7 @@ constexpr bool isPowerOfTwo(T x){
     return (x & (x - 1)) == 0;
 }
 
-//template metaprogramming implementation of euclids algorithm
+//constexpr implementation of euclids algorithm
 /* Based on this recursive definition from wikipedia:
 function extended_gcd(a, b)
   if b == 0
@@ -50,17 +50,14 @@ function extended_gcd(a, b)
     return (t, s - q * t)
 This assumes a "divide" procedure exists that returns a (quotient,remainder) pair (one could alternatively put q := a div b, and then r = a − b * q).
 */
-template <uint64_t A, uint64_t B>
-struct ExtendedEuclid {
-    enum {
-        x = ExtendedEuclid<B, A - B * (A / B)>::y,
-        y = ExtendedEuclid<B, A - B * (A / B)>::x - (A / B) * ExtendedEuclid<B, A - B * (A / B)>::y
-    };
-};
-template <uint64_t T>
-struct ExtendedEuclid<T, 0> {
-    enum {x = 1, y = 0};
-};
+constexpr uint64_t extendedEuclidY(uint64_t a, uint64_t b);
+constexpr uint64_t extendedEuclidX(uint64_t a, uint64_t b){
+    return (b==0) ? 1 : extendedEuclidY(b, a - b * (a / b));
+}
+constexpr uint64_t extendedEuclidY(uint64_t a, uint64_t b){
+    return (b==0) ? 0 : extendedEuclidX(b, a - b * (a / b)) - (a / b) * extendedEuclidY(b, a - b * (a / b));
+}
+
 
 //modulus M, multiplicand A, increment C, least significant bits to discard D
 template<uint64_t M = 1ul<<63ul, uint64_t A = 6364136223846793005, uint64_t C = 1442695040888963407, uint64_t D = 32>
@@ -75,7 +72,7 @@ public:
         return x >> D;
     }
     unsigned int prev() {
-        const uint64_t ainverse = ExtendedEuclid<A, M>::x;
+        const uint64_t ainverse = extendedEuclidX(A, M);
         //prevx = (ainverse * (x - c)) mod m
         x = ainverse * (x - C) & (M - 1);
         return x >> D;
