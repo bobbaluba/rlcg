@@ -50,32 +50,32 @@ function extended_gcd(a, b)
     return (t, s - q * t)
 This assumes a "divide" procedure exists that returns a (quotient,remainder) pair (one could alternatively put q := a div b, and then r = a − b * q).
 */
-template <int64_t A, int64_t B>
+template <uint64_t A, uint64_t B>
 struct ExtendedEuclid {
     enum {
         x = ExtendedEuclid<B, A - B * (A / B)>::y,
         y = ExtendedEuclid<B, A - B * (A / B)>::x - (A / B) * ExtendedEuclid<B, A - B * (A / B)>::y
     };
 };
-template <int64_t T>
+template <uint64_t T>
 struct ExtendedEuclid<T, 0> {
     enum {x = 1, y = 0};
 };
 
-//modulus M, multiplicand A, increment C, least significant bits D to discard
-template<int64_t M = 1u<<31u, int64_t A = 1103515245, int64_t C = 12345, int64_t D = 2>
+//modulus M, multiplicand A, increment C, least significant bits to discard D
+template<uint64_t M = 1ul<<63ul, uint64_t A = 6364136223846793005, uint64_t C = 1442695040888963407, uint64_t D = 32>
 class ReversibleLCG {
     static_assert(isPowerOfTwo(M), "M is not a power of two as it should be");
-    int64_t x;
+    uint64_t x;
 public:
-    ReversibleLCG(int seed) : x(seed){}
+    ReversibleLCG(unsigned int seed) : x(seed){}
     unsigned int next() {
         //nextx = (a * x + c) % m;
         x = (A * x + C) & (M - 1);
         return x >> D;
     }
     unsigned int prev() {
-        const int64_t ainverse = ExtendedEuclid<A, M>::x;
+        const uint64_t ainverse = ExtendedEuclid<A, M>::x;
         //prevx = (ainverse * (x - c)) mod m
         x = ainverse * (x - C) & (M - 1);
         return x >> D;
