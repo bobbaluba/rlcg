@@ -51,7 +51,7 @@ public:
         return x >> 2;
     }
     unsigned int prev(){
-        x = (ainverse * mod(x - c, m)) % m;
+        x = mod(ainverse * (x - c), m);
         return x >> 2;
     }
     unsigned int max(){
