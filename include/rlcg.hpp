@@ -62,25 +62,6 @@ struct ExtendedEuclid<T, 0> {
     enum {x = 1, y = 0};
 };
 
-const int moduloInverse(int64_t a, int64_t b) {
-    //euclid's algorithm
-    int64_t x = 0;
-    int64_t y = 1;
-    int64_t lastx = 1;
-    int64_t lasty = 0;
-    int64_t q, r;
-    int64_t tmp;
-
-    while (b != 0) {
-        q = a / b;
-        r = a % b;
-        tmp = x; x = lastx - q * x; lastx = tmp;
-        tmp = y; y = lasty - q * y; lasty = tmp;
-        a = b; b = r;
-    }
-    return lastx;
-}
-
 //modulus M, multiplicand A, increment C, least significant bits D to discard
 template<int64_t M = 1u<<31u, int64_t A = 1103515245, int64_t C = 12345, int64_t D = 2>
 class ReversibleLCG {
@@ -96,7 +77,7 @@ public:
     unsigned int prev() {
         const int64_t ainverse = ExtendedEuclid<A, M>::x;
         //prevx = (ainverse * (x - c)) mod m
-        x = ainverse * (x - C) & (M-1);
+        x = ainverse * (x - C) & (M - 1);
         return x >> D;
     }
     unsigned int max() const {
