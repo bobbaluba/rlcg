@@ -42,9 +42,8 @@ class ReversibleLCG {
     int64_t ainverse;
 public:
     ReversibleLCG(int seed) : x(seed), a(1103515245), m(1u<<31u), c(12345){
-        int64_t x, discard;
-        ext_euclid(a, m, &x, &discard);
-        ainverse = mod(x, int64_t(m));
+        int64_t discard;
+        ext_euclid(a, m, &ainverse, &discard);
     }
     unsigned int next(){
         x = (a*x + c) % m;
