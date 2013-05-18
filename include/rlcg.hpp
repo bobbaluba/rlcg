@@ -40,6 +40,29 @@ T mod(T a, T b) {
     return a > 0 ? a : a + b;
 }
 
+//template metaprogramming implementation of euclids algorithm
+/* Based on this recursive definition from wikipedia:
+function extended_gcd(a, b)
+  if b == 0
+    return (1, 0)
+  else
+    (q, r) := divide (a, b)
+    (s, t) := extended_gcd(b, r)
+    return (t, s - q * t)
+This assumes a "divide" procedure exists that returns a (quotient,remainder) pair (one could alternatively put q := a div b, and then r = a − b * q).
+*/
+template <int64_t A, int64_t B>
+struct ExtendedEuclid {
+    enum {
+        x = ExtendedEuclid<B, A - B * (A / B)>::y,
+        y = ExtendedEuclid<B, A - B * (A / B)>::x - (A / B) * ExtendedEuclid<B, A - B * (A / B)>::y
+    };
+};
+template <int64_t T>
+struct ExtendedEuclid<T, 0> {
+    enum {x = 1, y = 0};
+};
+
 const int moduloInverse(int64_t a, int64_t b) {
     //euclid's algorithm
     int64_t x = 0;
@@ -62,14 +85,14 @@ const int moduloInverse(int64_t a, int64_t b) {
 template<int64_t M = 1u<<31u, int64_t A = 1103515245, int64_t C = 12345, int64_t D = 2>
 class ReversibleLCG {
     int64_t x;
-    const int64_t ainverse;
 public:
-    ReversibleLCG(int seed) : x(seed), ainverse(moduloInverse(A, M)){}
+    ReversibleLCG(int seed) : x(seed){}
     unsigned int next() {
         x = (A * x + C) % M;
         return x >> D;
     }
     unsigned int prev() {
+        const int64_t ainverse = ExtendedEuclid<A, M>::x;
         x = mod(ainverse * (x - C), M);
         return x >> D;
     }
