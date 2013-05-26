@@ -32,7 +32,7 @@ Why would I want this?
 
 Sometimes it is useful to backtrace from a current random number to the 
 previous ones without storing them along the way. This implementation 
-stores only a 64-bit state internally, so memory the memory footprint is 
+stores only a 64-bit state internally, so the memory footprint is 
 extremely small.
 
 
