@@ -50,6 +50,7 @@ function and an index.
 ```c++
 class rrng {
     int index;
+public:
     rrnd(int seed):index(seed){}
     int next(){ return hash(index++); }
     int prev(){ return hash(index--); }
