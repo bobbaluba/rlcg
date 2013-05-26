@@ -1,8 +1,8 @@
 Reversible Linear Congruential Generator
 ========================================
 
-A header-only implementation of a random number generator which 
-supports generating random numbers in two directions.
+A header-only implementation of a pseudorandom number generator 
+which supports generating random numbers in two directions.
 
 What do you mean reversible?
 ----------------------------
