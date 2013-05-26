@@ -63,7 +63,7 @@ where `hash(int)` is your favorite hash function
 ### Encryption
 
 You could use a simple symmetric encryption algorithm to encrypt 
-the previous one. I have not tested this, but in theory it should 
+the previous number. I have not tested this, but in theory it should 
 work.
 
 How random are the generated numbers?
