@@ -70,15 +70,16 @@ How random are the generated numbers?
 -------------------------------------
 
 Basically the quality is the same as the as for a regular linear 
-congruential generator, but it should be fine in most use cases. 
+congruential generator, and it should be fine in most use cases. 
 With the standard parameters, the generator has a period of 2^64.
 
 See https://en.wikipedia.org/wiki/Linear_congruential_generator 
 for more details.
 
-There's also an issue with the random number before the first number 
+There's an issue with the random number before the first number 
 often being 0 or close to zero. I am not completely sure why this 
-happens.
+happens, but it seems to have something to do with what happens 
+when an lcg wraps.
 
 Author
 ------
