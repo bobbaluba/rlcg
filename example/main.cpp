@@ -13,6 +13,7 @@ int main() {
 	for(int i = 0; i<numtests; ++i){
 		forward.push_back(rng.next());
 		std::cout << forward.back() << std::endl;
+		assert(forward.back() <= rng.max());
 	}
 	std::cout << "\nBackwards:\n";
 	for(int i = numtests - 2; i>=0; --i){

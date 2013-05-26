@@ -78,7 +78,7 @@ public:
         return x >> D;
     }
     unsigned int max() const {
-        return M >> D;
+        return (M - 1) >> D;
     }
 };
 

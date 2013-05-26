@@ -71,7 +71,7 @@ How random are the generated numbers?
 
 Basically the quality is the same as the as for a regular linear 
 congruential generator, and it should be fine in most use cases. 
-With the standard parameters, the generator has a period of 2^64.
+With the standard parameters, the generator has a period of 2^63.
 
 See https://en.wikipedia.org/wiki/Linear_congruential_generator 
 for more details.
