@@ -76,10 +76,9 @@ With the standard parameters, the generator has a period of 2^63.
 See https://en.wikipedia.org/wiki/Linear_congruential_generator 
 for more details.
 
-There's an issue with the random number before the first number 
-often being 0 or close to zero. I am not completely sure why this 
-happens, but it seems to have something to do with what happens 
-when an lcg wraps.
+You should be aware that (seed >> 32) is going to be one of the random
+numbers. This would equal 0 if you seed with `time(0)`. Take care when
+seeding if you are going to get back to the initial state.
 
 
 License
