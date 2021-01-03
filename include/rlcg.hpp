@@ -57,8 +57,8 @@ constexpr std::tuple<uint64_t, uint64_t> extendedEuclid(uint64_t a, uint64_t b) 
         return std::make_tuple(1, 0);
     }
     else {
-        auto r = a - b * (a / b);
-        auto q = (a / b);
+        uint64_t q = a / b; // integer division
+        uint64_t r = a - b * q; // get the remainder
         auto [s, t] = extendedEuclid(b, r);
         return std::make_tuple(t, s - q * t);
     }
