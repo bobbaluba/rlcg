@@ -29,6 +29,7 @@
 #define RLCG_HPP
 
 #include <cstdint>
+#include <tuple>
 
 namespace rlcg {
 
@@ -50,14 +51,18 @@ function extended_gcd(a, b)
     return (t, s - q * t)
 This assumes a "divide" procedure exists that returns a (quotient,remainder) pair (one could alternatively put q := a div b, and then r = a − b * q).
 */
-constexpr uint64_t extendedEuclidY(uint64_t a, uint64_t b);
-constexpr uint64_t extendedEuclidX(uint64_t a, uint64_t b){
-    return (b==0) ? 1 : extendedEuclidY(b, a - b * (a / b));
-}
-constexpr uint64_t extendedEuclidY(uint64_t a, uint64_t b){
-    return (b==0) ? 0 : extendedEuclidX(b, a - b * (a / b)) - (a / b) * extendedEuclidY(b, a - b * (a / b));
-}
 
+constexpr std::tuple<uint64_t, uint64_t> extendedEuclid(uint64_t a, uint64_t b) {
+    if (b == 0) {
+        return std::make_tuple(1, 0);
+    }
+    else {
+        auto r = a - b * (a / b);
+        auto q = (a / b);
+        auto [s, t] = extendedEuclid(b, r);
+        return std::make_tuple(t, s - q * t);
+    }
+}
 
 //modulus M, multiplicand A, increment C, least significant bits to discard D
 template<uint64_t M = 1ul<<63ul, uint64_t A = 6364136223846793005, uint64_t C = 1442695040888963407, uint64_t D = 32>
@@ -72,7 +77,7 @@ public:
         return x >> D;
     }
     unsigned int prev() {
-        const uint64_t ainverse = extendedEuclidX(A, M);
+        const uint64_t ainverse = std::get<0>(extendedEuclid(A, M));
         //prevx = (ainverse * (x - c)) mod m
         x = ainverse * (x - C) & (M - 1);
         return x >> D;
