@@ -77,7 +77,7 @@ public:
         return x >> D;
     }
     unsigned int prev() {
-        const uint64_t ainverse = std::get<0>(extendedEuclid(A, M));
+        constexpr uint64_t ainverse = std::get<0>(extendedEuclid(A, M));
         //prevx = (ainverse * (x - c)) mod m
         x = ainverse * (x - C) & (M - 1);
         return x >> D;
