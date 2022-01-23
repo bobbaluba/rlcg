@@ -65,7 +65,7 @@ constexpr std::tuple<uint64_t, uint64_t> extendedEuclid(uint64_t a, uint64_t b) 
 }
 
 //modulus M, multiplicand A, increment C, least significant bits to discard D
-template<uint64_t M = 1ul<<63ul, uint64_t A = 6364136223846793005, uint64_t C = 1442695040888963407, uint64_t D = 32>
+template<uint64_t M = 1ull<<63ul, uint64_t A = 6364136223846793005, uint64_t C = 1442695040888963407, uint64_t D = 32>
 class ReversibleLCG {
     static_assert(isPowerOfTwo(M), "M is not a power of two as it should be");
     uint64_t x;
