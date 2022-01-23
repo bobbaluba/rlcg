@@ -71,6 +71,8 @@ class ReversibleLCG {
     uint64_t x;
 public:
     ReversibleLCG(unsigned int seed) : x(seed){}
+    // Hi 32-bits is the initial value, lo 32-bit is a random seed
+    void seed(uint64_t s) { x = s; }
     unsigned int next() {
         //nextx = (a * x + c) % m;
         x = (A * x + C) & (M - 1);
