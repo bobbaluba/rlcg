@@ -28,8 +28,8 @@
 #ifndef RLCG_HPP
 #define RLCG_HPP
 
+#include <array>
 #include <cstdint>
-#include <tuple>
 
 namespace rlcg {
 
@@ -52,15 +52,15 @@ function extended_gcd(a, b)
 This assumes a "divide" procedure exists that returns a (quotient,remainder) pair (one could alternatively put q := a div b, and then r = a − b * q).
 */
 
-constexpr std::tuple<uint64_t, uint64_t> extendedEuclid(uint64_t a, uint64_t b) {
+constexpr std::array<uint64_t, 2> extendedEuclid(uint64_t a, uint64_t b) {
     if (b == 0) {
-        return std::make_tuple(1, 0);
+        return {1, 0};
     }
     else {
         uint64_t q = a / b; // integer division
         uint64_t r = a - b * q; // get the remainder
         auto [s, t] = extendedEuclid(b, r);
-        return std::make_tuple(t, s - q * t);
+        return {t, s - q * t};
     }
 }
 
